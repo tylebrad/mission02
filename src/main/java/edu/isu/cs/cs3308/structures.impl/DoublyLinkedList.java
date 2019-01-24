@@ -6,6 +6,7 @@
  * Professor: Isaac Griffith
  */
 package edu.isu.cs.cs3308.structures.impl;
+import edu.isu.cs.cs3308.structures.List;
 
 public class DoublyLinkedList<E> implements List<E> {
     @Override
