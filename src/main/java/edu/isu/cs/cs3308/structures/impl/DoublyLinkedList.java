@@ -72,7 +72,7 @@ public class DoublyLinkedList<E> implements List<E> {
     public E first() {
         if(isEmpty())
             return null;
-        return head.getData();
+        return head.getNext().getData();
     }
 
     /**
@@ -82,7 +82,7 @@ public class DoublyLinkedList<E> implements List<E> {
     public E last() {
         if(isEmpty())
             return null;
-        return tail.getData();
+        return tail.getPrev().getData();
     }
 
     /**
@@ -98,8 +98,12 @@ public class DoublyLinkedList<E> implements List<E> {
         Node<E> newNode = new Node<>(element, null, null);
         newNode.setPrev(tail.getPrev());
         newNode.setNext(tail);
-        tail.prev.next = newNode;
-        tail.prev = newNode;
+        tail.setPrev(newNode);
+        //Trying anything  #Change
+        Node<E> unnecessaryTemp = newNode.getPrev();
+        unnecessaryTemp.setNext(newNode);
+        //newNode.getPrev().setNext(newNode);
+        size++;
     }
 
     /**
@@ -110,7 +114,11 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public void addFirst(E element) {
-
+        if (element == null)
+            return;
+        Node<E> newNode = new Node<>(element, null, null);
+        newNode.setPrev(head);
+        newNode.setNext(head.getNext());
     }
 
     /**
@@ -120,6 +128,13 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public E removeFirst() {
+        if (isEmpty())
+            return null;
+        Node<E> newTemp = head.getNext();
+        head.next = newTemp.getNext();
+        newTemp.next.prev = head;
+        newTemp.prev = null;
+        newTemp.next = null;
         return null;
     }
 
@@ -180,7 +195,7 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     /**
@@ -189,7 +204,9 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        if (head.getNext() != null)
+            return false;
+        return true;
     }
 
     /**
