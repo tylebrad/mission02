@@ -14,7 +14,7 @@ import edu.isu.cs.cs3308.structures.List;
 public class DoublyLinkedList<E> implements List<E> {
 
     private Node<E> head = null;
-    private Node tail = null;
+    private Node<E> tail = null;
     private int size = 0;
 
     /**
@@ -26,16 +26,18 @@ public class DoublyLinkedList<E> implements List<E> {
         private Node<E> next;
         private Node<E> prev;
 
-        Node(E d) { data = d; }
+        //public Node(E d) { this.data = d; }
 
         /**
          * Node Constructor
          * @param d Node Data
          * @param n Node's "Next" reference
+         * @param p Node's "Previous" reference
          */
-        public Node(E d, Node<E> n){
+        public Node(E d, Node<E> n, Node<E> p){
             this.data = d;
             this.next = n;
+            this.prev = p;
         }
 
         public E getData(){
@@ -52,6 +54,14 @@ public class DoublyLinkedList<E> implements List<E> {
 
         public void setNext(Node<E> next) {
             this.next = next;
+        }
+
+        public Node<E> getPrev(){
+            return prev;
+        }
+
+        public void setPrev(Node<E> prev){
+            this.prev = prev;
         }
     }
 
@@ -70,7 +80,9 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public E last() {
-        return null;
+        if(isEmpty())
+            return null;
+        return tail.getData();
     }
 
     /**
@@ -81,7 +93,13 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public void addLast(E element) {
-
+        if (element == null)
+            return;
+        Node<E> newNode = new Node<>(element, null, null);
+        newNode.setPrev(tail.getPrev());
+        newNode.setNext(tail);
+        tail.prev.next = newNode;
+        tail.prev = newNode;
     }
 
     /**

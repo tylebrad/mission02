@@ -1,7 +1,6 @@
 package edu.isu.cs.cs3308;
 
 import edu.isu.cs.cs3308.structures.Stack;
-import edu.isu.cs.cs3308.structures.impl.DoublyLinkedList;
 import edu.isu.cs.cs3308.structures.impl.LinkedStack;
 
 /**
@@ -14,7 +13,7 @@ public class Driver {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Stack<Integer> stack = new LinkedStack<E>();
+        Stack<Integer> stack = new LinkedStack<>();
         for (int i = 0; i < 10; i++)
             stack.push(i);
 
