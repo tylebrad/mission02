@@ -63,7 +63,7 @@ public class DoublyLinkedList<E> implements List<E> {
      * Sentinel Nodes and size variable
      */
     private Node<E> head = new Node<>(null, null, null);
-    private Node<E> tail = new Node<>(null, null, null);
+    private Node<E> tail = new Node<>(null, null, head);
     private int size = 0;
 
     /**
@@ -96,16 +96,17 @@ public class DoublyLinkedList<E> implements List<E> {
     public void addLast(E element) {
         if (element == null)
             return;
-        Node<E> newNode = new Node<>(element, null, null);
-        //newNode.setPrev(tail.getPrev());
+
+        Node<E> newNode = new Node<>(element, tail, null);
+        //Handling empty list
+        if (isEmpty()) {
+            head.setNext(newNode);
+            tail.setPrev(newNode);
+            newNode.setPrev(head);
+        }
+        tail.prev.setNext(newNode);
+        newNode.setPrev(tail.prev);
         tail.prev = newNode;
-        //newNode.setNext(tail);
-        newNode.next = tail;
-        tail.setPrev(newNode);
-        //Trying anything  #Change
-        Node<E> unnecessaryTemp = newNode.getPrev();
-        unnecessaryTemp.setNext(newNode);
-        //newNode.getPrev().setNext(newNode);
         size++;
     }
 
@@ -119,12 +120,20 @@ public class DoublyLinkedList<E> implements List<E> {
     public void addFirst(E element) {
         if (element == null)
             return;
-        Node<E> newNode = new Node<>(element, null, null);
-        newNode.setPrev(head);
+
+        Node<E> newNode = new Node<>(element, null, head);
+        //If statement to handle an empty list
+        if (isEmpty()) {
+            tail.setPrev(newNode);
+            head.setNext(newNode);
+            newNode.setNext(tail);
+        }
+        //Normal addFirst logic
+        head.getNext().setPrev(newNode);
         newNode.setNext(head.getNext());
         head.setNext(newNode);
-        newNode.next.setPrev(newNode);
         size++;
+
     }
 
     /**
@@ -137,7 +146,7 @@ public class DoublyLinkedList<E> implements List<E> {
         if (isEmpty())
             return null;
         Node<E> newTemp = head.getNext();
-        head.next = newTemp.getNext();
+        head.setNext(newTemp.getNext());
         newTemp.getNext().setPrev(head);
         newTemp.prev = null;
         newTemp.next = null;
@@ -206,7 +215,7 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public E remove(int index) {
-        if(index < 0)
+        if(index < 0 || this.isEmpty())
             return null;
 
         Node<E> temp = head.getNext();
@@ -234,8 +243,8 @@ public class DoublyLinkedList<E> implements List<E> {
         if(index < 0 || index >= this.size())
             return null;
 
-        Node<E> temp = head.next;
-        for(int i = 0; i < index; i++)
+        Node<E> temp = head.getNext();
+        for(int i = 0; i < index - 1; i++)
             temp = temp.getNext();
         return temp.getNext().getData();
     }
@@ -255,7 +264,7 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public boolean isEmpty() {
-        return this.head.next == null;
+        return size == 0;
     }
 
     /**
