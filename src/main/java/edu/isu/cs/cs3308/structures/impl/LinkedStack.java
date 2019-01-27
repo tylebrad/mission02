@@ -13,6 +13,60 @@ import edu.isu.cs.cs3308.structures.Stack;
 
 public class LinkedStack<E> implements Stack<E> {
 
+    private int size = 0;
+
+    /**
+     * Node class nested within DLL
+     * @param <E>
+     */
+    public static class Node<E>{
+        private E data;
+        private Node<E> next;
+        private Node<E> prev;
+
+        /**
+         * Node Constructor
+         * @param d Node Data
+         * @param n Node's "Next" reference
+         * @param p Node's "Previous" reference
+         */
+        public Node(E d, Node<E> n, Node<E> p){
+            this.data = d;
+            this.next = n;
+            this.prev = p;
+        }
+
+        public E getData(){
+            return data;
+        }
+
+        public void setData(E data) {
+            this.data = data;
+        }
+
+        public Node<E> getNext(){
+            return next;
+        }
+
+        public void setNext(Node<E> next) {
+            this.next = next;
+        }
+
+        public Node<E> getPrev(){
+            return prev;
+        }
+
+        public void setPrev(Node<E> prev){
+            this.prev = prev;
+        }
+    }
+    /**
+     * Adds the provided item to the top of the stack. Note that if the item is
+     * null, nothing occurs.
+     *
+     * @param element Element added to the top of the stack, unless this item is
+     * null.
+     */
     @Override
     public void push(E element) {
 
@@ -33,6 +87,9 @@ public class LinkedStack<E> implements Stack<E> {
         return 0;
     }
 
+    /**
+     * @return True if this stack is empty, false otherwise.
+     */
     @Override
     public boolean isEmpty() {
         return false;

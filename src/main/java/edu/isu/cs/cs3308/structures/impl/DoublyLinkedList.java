@@ -97,8 +97,10 @@ public class DoublyLinkedList<E> implements List<E> {
         if (element == null)
             return;
         Node<E> newNode = new Node<>(element, null, null);
-        newNode.setPrev(tail.getPrev());
-        newNode.setNext(tail);
+        //newNode.setPrev(tail.getPrev());
+        tail.prev = newNode;
+        //newNode.setNext(tail);
+        newNode.next = tail;
         tail.setPrev(newNode);
         //Trying anything  #Change
         Node<E> unnecessaryTemp = newNode.getPrev();
@@ -177,10 +179,21 @@ public class DoublyLinkedList<E> implements List<E> {
             return;
 
         Node<E> newNode = new Node<>(element, null, null);
-        //Node<E> newTemp = new Node<>(tail.getPrev(), null, null);
-        if(index >= size()){
+        Node<E> current = head.getNext();
 
+        if(index >= size()){
+            tail.getPrev().setNext(newNode);
+            tail.setPrev(newNode);
         }
+        else
+            for (int i = 0; i < index - 1; i++)
+                current = current.getNext();
+            Node<E> newTemp = current.getNext();
+            newNode.setPrev(newTemp);
+            newNode.setNext(newTemp.getNext());
+            newTemp.getNext().setPrev(newNode);
+            newTemp.setNext(newNode);
+            size++;
 
     }
 
@@ -193,6 +206,17 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public E remove(int index) {
+        if(index < 0)
+            return null;
+
+        Node<E> temp = head.getNext();
+        for(int i = 0; i < index - 1; i++)
+            temp = temp.getNext();
+        temp.getNext().setPrev(temp.getPrev());
+        temp.getPrev().setNext(temp.getNext());
+        temp.next = null;
+        temp.prev = null;
+        size--;
         return null;
     }
 
@@ -207,7 +231,13 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public E get(int index) {
-        return null;
+        if(index < 0 || index >= this.size())
+            return null;
+
+        Node<E> temp = head.next;
+        for(int i = 0; i < index; i++)
+            temp = temp.getNext();
+        return temp.getNext().getData();
     }
 
     /**
@@ -225,7 +255,7 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public boolean isEmpty() {
-        return this.head.getNext() == null;
+        return this.head.next == null;
     }
 
     /**
