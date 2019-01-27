@@ -13,10 +13,6 @@ import edu.isu.cs.cs3308.structures.List;
 
 public class DoublyLinkedList<E> implements List<E> {
 
-    private Node<E> head = null;
-    private Node<E> tail = null;
-    private int size = 0;
-
     /**
      * Node class nested within DLL
      * @param <E>
@@ -25,8 +21,6 @@ public class DoublyLinkedList<E> implements List<E> {
         private E data;
         private Node<E> next;
         private Node<E> prev;
-
-        //public Node(E d) { this.data = d; }
 
         /**
          * Node Constructor
@@ -64,6 +58,13 @@ public class DoublyLinkedList<E> implements List<E> {
             this.prev = prev;
         }
     }
+
+    /**
+     * Sentinel Nodes and size variable
+     */
+    private Node<E> head = new Node<>(null, null, null);
+    private Node<E> tail = new Node<>(null, null, null);
+    private int size = 0;
 
     /**
      * @return first element in the list or null if the list is empty
@@ -119,6 +120,9 @@ public class DoublyLinkedList<E> implements List<E> {
         Node<E> newNode = new Node<>(element, null, null);
         newNode.setPrev(head);
         newNode.setNext(head.getNext());
+        head.setNext(newNode);
+        newNode.next.setPrev(newNode);
+        size++;
     }
 
     /**
@@ -132,9 +136,10 @@ public class DoublyLinkedList<E> implements List<E> {
             return null;
         Node<E> newTemp = head.getNext();
         head.next = newTemp.getNext();
-        newTemp.next.prev = head;
+        newTemp.getNext().setPrev(head);
         newTemp.prev = null;
         newTemp.next = null;
+        size--;
         return null;
     }
 
@@ -145,6 +150,14 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public E removeLast() {
+        if(isEmpty())
+            return null;
+        Node<E> newTemp = tail.getPrev();
+        tail.setPrev(newTemp.getPrev());
+        newTemp.getPrev().setNext(tail);
+        newTemp.next = null;
+        newTemp.prev = null;
+        size--;
         return null;
     }
 
@@ -160,6 +173,14 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public void insert(E element, int index) {
+        if(element == null || index < 0)
+            return;
+
+        Node<E> newNode = new Node<>(element, null, null);
+        //Node<E> newTemp = new Node<>(tail.getPrev(), null, null);
+        if(index >= size()){
+
+        }
 
     }
 
@@ -195,7 +216,7 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public int size() {
-        return size;
+        return this.size;
     }
 
     /**
@@ -204,9 +225,7 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public boolean isEmpty() {
-        if (head.getNext() != null)
-            return false;
-        return true;
+        return this.head.getNext() == null;
     }
 
     /**
