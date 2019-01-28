@@ -112,12 +112,11 @@ public class LinkedStack<E> implements Stack<E> {
      */
     @Override
     public void transfer(Stack<E> to) {
-//        if (to == null)
-//            return;
-//        while(top != null){
-//            to.push(top.data);
-//            top.setNext(top.getNext());
-//        }
+        if (to == null || this.isEmpty())
+            return;
+        while(this.isEmpty() != true)
+            to.push(this.pop());
+
     }
 
     /**
@@ -125,6 +124,15 @@ public class LinkedStack<E> implements Stack<E> {
      */
     @Override
     public void reverse() {
+        if (this.isEmpty())
+            return;
+        LinkedStack<E> tempStack1 = new LinkedStack<>();
+        LinkedStack<E> tempStack2 = new LinkedStack<>();
+        transfer(tempStack1);
+        if (tempStack1 == null)
+            return;
+        for(int i = 0; i < tempStack1.size; i++)
+            tempStack2.push(tempStack1.peek());
 
     }
 
@@ -140,6 +148,9 @@ public class LinkedStack<E> implements Stack<E> {
      */
     @Override
     public void merge(Stack<E> other) {
+        if (other == null || this.isEmpty())
+            return;
+
 
     }
 
