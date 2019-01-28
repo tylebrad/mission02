@@ -126,13 +126,13 @@ public class LinkedStack<E> implements Stack<E> {
     public void reverse() {
         if (this.isEmpty())
             return;
+
         LinkedStack<E> tempStack1 = new LinkedStack<>();
         LinkedStack<E> tempStack2 = new LinkedStack<>();
-        transfer(tempStack1);
-        if (tempStack1 == null)
-            return;
-        for(int i = 0; i < tempStack1.size; i++)
-            tempStack2.push(tempStack1.peek());
+
+
+        for(int i = 0; i < size; i++)
+        this.push(tempStack1.peek());
 
     }
 
@@ -160,6 +160,11 @@ public class LinkedStack<E> implements Stack<E> {
      */
     @Override
     public void printStack() {
+        if(this.isEmpty())
+            return;
+        for(int i = 0; i < this.size(); i++){
+            System.out.print(this.peek() + System.lineSeparator());
+        }
 
     }
 }
